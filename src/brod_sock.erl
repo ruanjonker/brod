@@ -163,8 +163,8 @@ init(Parent, Host, Port, ClientId, Options) ->
       {ok, [{recbuf, RecBufSize}, {sndbuf, SndBufSize}]} =
         inet:getopts(Sock, [recbuf, sndbuf]),
       ok = inet:setopts(Sock, [{buffer, max(RecBufSize, SndBufSize)}]),
-      State = case proplists:get_value(ssl, Options, []) of
-                [] ->
+      State = case proplists:get_value(ssl, Options, undefined) of
+                undefined ->
                   State0#state{mod = gen_tcp, sock = Sock};
                 SslOpts ->
                   error_logger:info_msg("Trying to establish ssl connection "
